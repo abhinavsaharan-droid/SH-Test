@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Scavenger Hunt Clue Gate</title>
+<style>
+:root {
+--bg: #f6f3ee;
+--card: #ffffff;
+--text: #1f2937;
+--muted: #6b7280;
+--primary: #0f766e;
+--primary-dark: #115e59;
+--border: #d1d5db;
+--error-bg: #fef2f2;
+--error-text: #b91c1c;
+--success-bg: #ecfdf5;
+--success-text: #065f46;
+--shadow: 0 10px 30px rgba(0,0,0,0.08);
+--radius: 16px;
+}
+
+* { box-sizing: border-box; }
+body {
+margin: 0;
+min-height: 100vh;
+display: grid;
+place-items: center;
+padding: 24px;
+background: linear-gradient(180deg, #f6f3ee 0%, #ece7df 100%);
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+color: var(--text);
+}
+
+.card {
+width: min(100%, 460px);
+background: var(--card);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+box-shadow: var(--shadow);
+padding: 28px;
+}
+
+.eyebrow {
+display: inline-block;
+padding: 6px 10px;
+border-radius: 999px;
+background: #e6fffb;
+color: #0f766e;
+font-size: 12px;
+font-weight: 700;
+letter-spacing: .04em;
+text-transform: uppercase;
+margin-bottom: 12px;
+}
+
+h1 {
+margin: 0 0 10px;
+font-size: 28px;
+line-height: 1.15;
+}
+
+p {
+margin: 0 0 18px;
+color: var(--muted);
+line-height: 1.5;
+}
+
+label {
+display: block;
+margin-bottom: 8px;
+font-size: 14px;
+font-weight: 600;
+}
+
+input {
+width: 100%;
+padding: 14px 16px;
+border: 1px solid var(--border);
+border-radius: 12px;
+font-size: 16px;
+outline: none;
+}
+
+input:focus {
+border-color: var(--primary);
+box-shadow: 0 0 0 4px rgba(15,118,110,0.12);
+}
+
+.actions {
+display: flex;
+gap: 12px;
+margin-top: 16px;
+}
+
+button {
+flex: 1;
+border: 0;
+border-radius: 12px;
+padding: 14px 16px;
+font-size: 15px;
+font-weight: 700;
+cursor: pointer;
+background: var(--primary);
+color: white;
+}
+
+button:hover { background: var(--primary-dark); }
+
+.hint {
+margin-top: 14px;
+font-size: 13px;
+color: var(--muted);
+}
+
+.message {
+display: none;
+margin-top: 16px;
+padding: 12px 14px;
+border-radius: 12px;
+font-size: 14px;
+line-height: 1.4;
+}
+
+.message.error {
+display: block;
+background: var(--error-bg);
+color: var(--error-text);
+}
+
+.message.success {
+display: block;
+background: var(--success-bg);
+color: var(--success-text);
+}
+
+.footer {
+margin-top: 22px;
+font-size: 12px;
+color: var(--muted);
+}
+
+code {
+background: #f3f4f6;
+padding: 2px 6px;
+border-radius: 6px;
+}
+</style>
+</head>
+<body>
+<div class="card">
+<div class="eyebrow">Scavenger Hunt</div>
+<h1>Enter password to unlock the next clue</h1>
+<p>Scan the QR code, enter the password, and the next clue link will open automatically.</p>
+
+<form id="gateForm">
+<label for="password">Password</label>
+<input id="password" name="password" type="password" placeholder="Enter password" autocomplete="off" required />
+<div class="actions">
+<button type="submit">Unlock clue</button>
+</div>
+</form>
+
+<div id="message" class="message"></div>
+
+<div class="hint">
+Edit these two lines in the HTML file before using it:<br />
+<code>const correctPassword = "team123";</code><br />
+<code>const destinationUrl = "https://example.com/next-clue";</code>
+</div>
+
+<div class="footer">
+Tip: create one copy per checkpoint and change the password + link each time.
+</div>
+</div>
+
+<script>
+const correctPassword = "team123";
+const destinationUrl = "https://example.com/next-clue";
+
+const form = document.getElementById('gateForm');
+const passwordInput = document.getElementById('password');
+const message = document.getElementById('message');
+
+form.addEventListener('submit', function (e) {
+e.preventDefault();
+const entered = passwordInput.value.trim();
+
+if (entered === correctPassword) {
+message.className = 'message success';
+message.textContent = 'Correct password. Opening next clue...';
+setTimeout(() => {
+window.location.href = destinationUrl;
+}, 700);
+} else {
+message.className = 'message error';
+message.textContent = 'Wrong password. Please try again.';
+passwordInput.focus();
+passwordInput.select();
+}
+});
+</script>
+</body>
+</html>
